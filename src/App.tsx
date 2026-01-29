@@ -147,18 +147,18 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
           </p>
         </div>
 
-        {/* FLOATING STANDARDS ANIMATION - Fanning out cleanly */}
-        <div className="w-full h-56 relative flex items-center justify-center z-10">
-             {/* Top Row */}
-             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-3" x={-80} y={-50} delay={0} />
-             <FloatingFilter index={1} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="rotate-2" x={70} y={-60} delay={0.1} />
+        {/* FLOATING STANDARDS ANIMATION - Compact Cloud */}
+        <div className="w-full h-40 relative flex items-center justify-center z-10">
+             {/* Top Row - Moved down */}
+             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-3" x={-80} y={-35} delay={0} />
+             <FloatingFilter index={1} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="rotate-2" x={70} y={-45} delay={0.1} />
              
-             {/* Middle/Bottom Row */}
+             {/* Middle - Centered */}
              <FloatingFilter index={2} text="Height: 6'2+" color="bg-blue-50 text-blue-700 border-blue-200" rotate="-rotate-1" x={0} y={0} delay={0.2} />
              
-             {/* Outer Edges */}
-             <FloatingFilter index={3} text="Age: 23" color="bg-violet-50 text-violet-700 border-violet-200" rotate="rotate-6" x={90} y={40} delay={0.3} />
-             <FloatingFilter index={4} text="Role: Founder" color="bg-orange-50 text-orange-700 border-orange-200" rotate="-rotate-4" x={-85} y={50} delay={0.4} />
+             {/* Bottom Row - Moved up */}
+             <FloatingFilter index={3} text="Age: 23" color="bg-violet-50 text-violet-700 border-violet-200" rotate="rotate-6" x={90} y={35} delay={0.3} />
+             <FloatingFilter index={4} text="Role: Founder" color="bg-orange-50 text-orange-700 border-orange-200" rotate="-rotate-4" x={-85} y={30} delay={0.4} />
         </div>
 
         {/* STATS */}
