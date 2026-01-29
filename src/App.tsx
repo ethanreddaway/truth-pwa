@@ -30,19 +30,23 @@ const DEMO_PROFILE: Profile = {
 };
 
 export default function App() {
+  const [view, setView] = useState<'landing' | 'scanning' | 'app'>('landing');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [lastSwipe, setLastSwipe] = useState<'left' | 'right' | null>(null);
 
   const handleSwipe = (dir: 'left' | 'right') => {
     setLastSwipe(dir);
-    // Reset for demo purposes after delay
     setTimeout(() => setLastSwipe(null), 800);
-    
-    if (dir === 'right') {
-        // Trigger paywall/verify occasionally
-        setTimeout(() => setShowVerifyModal(true), 500);
-    }
+    if (dir === 'right') setTimeout(() => setShowVerifyModal(true), 500);
   };
+
+  if (view === 'landing') {
+    return <LandingScreen onEnter={() => setView('scanning')} />;
+  }
+
+  if (view === 'scanning') {
+    return <ScanningScreen onComplete={() => setView('app')} />;
+  }
 
   return (
     <div className="min-h-[100dvh] flex items-center justify-center bg-[#050505] font-sans">
@@ -95,6 +99,83 @@ export default function App() {
         {/* MODALS */}
         <VerificationModal isOpen={showVerifyModal} onClose={() => setShowVerifyModal(false)} />
         
+      </div>
+    </div>
+  )
+}
+
+// --- NEW SCREENS ---
+
+function LandingScreen({ onEnter }: { onEnter: () => void }) {
+  return (
+    <div className="min-h-[100dvh] flex flex-col items-center justify-between bg-black text-white p-8 font-sans">
+      <div className="flex-1 flex flex-col items-center justify-center space-y-8">
+        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+            <span className="font-black text-black text-5xl tracking-tighter">TR</span>
+        </div>
+        
+        <div className="text-center space-y-4">
+          <h1 className="text-6xl font-black tracking-tighter leading-none">
+            TRUTH
+          </h1>
+          <p className="text-gray-400 text-lg tracking-wide uppercase font-mono">
+            No Filters. No Lies. Just Data.
+          </p>
+        </div>
+
+        <div className="w-full max-w-xs space-y-4 pt-12">
+            <div className="flex items-center justify-between text-xs text-gray-500 font-mono border-b border-gray-800 pb-2">
+                <span>ACTIVE USERS</span>
+                <span className="text-green-500">14,203 ONLINE</span>
+            </div>
+            <div className="flex items-center justify-between text-xs text-gray-500 font-mono border-b border-gray-800 pb-2">
+                <span>VERIFICATION QUEUE</span>
+                <span className="text-yellow-500">WAITLIST: 42m</span>
+            </div>
+        </div>
+      </div>
+
+      <button 
+        onClick={onEnter}
+        className="w-full max-w-sm bg-white text-black font-black text-lg py-5 rounded-full hover:scale-105 transition-transform active:scale-95 tracking-wide"
+      >
+        ENTER THE PROTOCOL
+      </button>
+      
+      <p className="mt-6 text-xs text-gray-600 font-mono">INVITE ONLY BETA v0.9</p>
+    </div>
+  )
+}
+
+function ScanningScreen({ onComplete }: { onComplete: () => void }) {
+  // Auto-advance after 3 seconds
+  useState(() => {
+    setTimeout(onComplete, 3500);
+  });
+
+  return (
+    <div className="min-h-[100dvh] bg-black flex flex-col items-center justify-center p-8 relative overflow-hidden">
+      {/* Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(20,20,20,1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,20,20,1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
+      
+      <div className="relative z-10 text-center space-y-8">
+        <div className="w-32 h-32 relative mx-auto">
+             <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
+             <div className="absolute inset-0 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+             <ScanLine className="absolute inset-0 m-auto text-blue-500 w-12 h-12 animate-pulse" />
+        </div>
+
+        <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-white tracking-tight animate-pulse">VERIFYING REALITY</h2>
+            <p className="text-blue-500 font-mono text-sm">ANALYZING BIOMETRICS...</p>
+        </div>
+
+        <div className="text-left font-mono text-xs text-gray-500 space-y-2 bg-gray-900/50 p-6 rounded-lg border border-gray-800 w-64 mx-auto">
+            <p className="flex justify-between"><span>> FACE MESH</span> <span className="text-green-500">OK</span></p>
+            <p className="flex justify-between"><span>> EXIF DATA</span> <span className="text-green-500">OK</span></p>
+            <p className="flex justify-between"><span>> INCOME API</span> <span className="text-gray-500">PENDING</span></p>
+            <p className="flex justify-between"><span>> STATUS</span> <span className="text-white">UNRANKED</span></p>
+        </div>
       </div>
     </div>
   )
