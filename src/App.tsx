@@ -77,19 +77,57 @@ export default function App() {
         {/* MAIN SWIPE AREA */}
         <main className="flex-1 relative w-full h-full p-4 bg-gray-50">
           <AnimatePresence>
-            {!lastSwipe && (
-              <SwipeCard profile={DEMO_PROFILE} onSwipe={handleSwipe} />
+            {!handle ? (
+                /* SHOW SWIPE DECK IF NO USER */
+                !lastSwipe && <SwipeCard profile={DEMO_PROFILE} onSwipe={handleSwipe} />
+            ) : (
+                /* SHOW PENDING PROFILE IF USER LOGGED IN */
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-full h-full rounded-[2.5rem] overflow-hidden relative border border-gray-100 shadow-2xl bg-white flex flex-col items-center justify-center p-8 text-center"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white pointer-events-none"></div>
+                    
+                    <div className="relative z-10">
+                        <div className="w-32 h-32 bg-gray-50 rounded-full mb-6 flex items-center justify-center border-4 border-white shadow-xl mx-auto relative overflow-hidden">
+                            {/* If we had the photo blob, we'd show it here. For now, User Icon */}
+                            <User className="w-12 h-12 text-gray-300" />
+                        </div>
+                        
+                        <h2 className="text-3xl font-black mb-2 text-black tracking-tight">@{handle}</h2>
+                        
+                        <div className="inline-flex items-center gap-2 bg-yellow-50 text-yellow-700 px-4 py-1.5 rounded-full text-xs font-bold border border-yellow-200 mb-8 shadow-sm">
+                            <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                            VERIFICATION PENDING
+                        </div>
+                        
+                        <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-3 w-full max-w-xs mx-auto">
+                            <div className="flex justify-between text-xs font-bold text-gray-400 tracking-widest">
+                                <span>POSITION</span>
+                                <span className="text-black">#42,901</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="w-[5%] h-full bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <p className="text-[10px] text-gray-400 font-medium pt-1">
+                                Your profile is under manual review by our Trust & Safety team. ETA: 4 Weeks.
+                            </p>
+                        </div>
+                    </div>
+                </motion.div>
             )}
-          </AnimatePresence>
-          
-          {lastSwipe && (
+            
+            {/* Loading / Searching State */}
+            {!handle && lastSwipe && (
              <div className="absolute inset-0 flex items-center justify-center z-0">
                 <div className="text-center animate-pulse">
                     <Heart className="w-12 h-12 text-pink-200 fill-pink-100 mx-auto mb-2" />
                     <p className="text-pink-400 font-bold text-sm tracking-widest">FINDING MATCH...</p>
                 </div>
              </div>
-          )}
+            )}
+          </AnimatePresence>
         </main>
 
         {/* BOTTOM NAV */}
@@ -686,5 +724,6 @@ function VerificationModal({ isOpen, onClose, onStart }: { isOpen: boolean, onCl
       </div>
     </div>
   );
-}/ /   F o r c e   R e b u i l d   v 0 . 9 . 5  
+}/ /   F o r c e   R e b u i l d   v 0 . 9 . 5 
+ 
  
