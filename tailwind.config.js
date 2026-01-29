@@ -15,6 +15,8 @@ export default {
           neon: '#3B82F6',
           green: '#10B981',
           gold: '#F59E0B',
+          pink: '#EC4899', // Hot Pink
+          violet: '#8B5CF6',
         }
       },
       fontFamily: {
