@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { 
   BadgeCheck, Shield, Ruler, DollarSign, Calendar, 
@@ -149,9 +149,10 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
 
 function ScanningScreen({ onComplete }: { onComplete: () => void }) {
   // Auto-advance after 3 seconds
-  useState(() => {
-    setTimeout(onComplete, 3500);
-  });
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 3500);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
 
   return (
     <div className="min-h-[100dvh] bg-black flex flex-col items-center justify-center p-8 relative overflow-hidden">
