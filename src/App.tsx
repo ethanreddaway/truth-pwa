@@ -30,9 +30,10 @@ const DEMO_PROFILE: Profile = {
 };
 
 export default function App() {
-  const [view, setView] = useState<'landing' | 'scanning' | 'app' | 'onboarding'>('landing');
+  const [view, setView] = useState<'landing' | 'social_input' | 'analyzing' | 'rating_result' | 'onboarding' | 'viral' | 'app'>('landing');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [lastSwipe, setLastSwipe] = useState<'left' | 'right' | null>(null);
+  const [handle, setHandle] = useState('');
 
   const handleSwipe = (dir: 'left' | 'right') => {
     setLastSwipe(dir);
@@ -40,21 +41,17 @@ export default function App() {
     if (dir === 'right') setTimeout(() => setShowVerifyModal(true), 500);
   };
 
-  if (view === 'landing') {
-    return <LandingScreen onEnter={() => setView('scanning')} />;
-  }
+  if (view === 'landing') return <LandingScreen onEnter={() => setView('social_input')} />;
+  
+  if (view === 'social_input') return <SocialInputScreen onNext={(h) => { setHandle(h); setView('analyzing'); }} />;
+  
+  if (view === 'analyzing') return <AnalysisScreen handle={handle} onComplete={() => setView('rating_result')} />;
+  
+  if (view === 'rating_result') return <RatingResultScreen onClaim={() => setView('onboarding')} />;
 
-  if (view === 'scanning') {
-    return <ScanningScreen onComplete={() => setView('app')} />;
-  }
+  if (view === 'onboarding') return <OnboardingFlow onComplete={() => setView('viral')} />;
 
-  if (view === 'onboarding') {
-    return <OnboardingFlow onComplete={() => setView('viral')} />;
-  }
-
-  if (view === 'viral') {
-      return <ViralShareScreen onComplete={() => setView('app')} />;
-  }
+  if (view === 'viral') return <ViralShareScreen onComplete={() => setView('app')} />;
 
   return (
     <div className="min-h-[100dvh] flex items-center justify-center bg-gray-100 font-sans">
@@ -109,7 +106,7 @@ export default function App() {
         <VerificationModal 
             isOpen={showVerifyModal} 
             onClose={() => setShowVerifyModal(false)} 
-            onStart={() => setView('onboarding')}
+            onStart={() => setView('social_input')}
         />
         
       </div>
@@ -117,7 +114,142 @@ export default function App() {
   )
 }
 
-// --- NEW SCREENS ---
+// --- NEW SCREENS FOR THE FUNNEL ---
+
+function SocialInputScreen({ onNext }: { onNext: (handle: string) => void }) {
+    const [input, setInput] = useState('');
+    return (
+        <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-white p-8 font-sans">
+            <div className="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="space-y-2 text-center">
+                    <h2 className="text-4xl font-black tracking-tighter">Who are you?</h2>
+                    <p className="text-gray-500 font-medium">We analyze your public profile to calculate your initial rating.</p>
+                </div>
+
+                <div className="relative">
+                    <span className="absolute left-4 top-4 text-gray-400 font-bold text-xl">@</span>
+                    <input 
+                        type="text" 
+                        placeholder="instagram_handle" 
+                        className="w-full p-4 pl-10 bg-gray-50 rounded-2xl border-2 border-gray-100 focus:border-pink-500 outline-none font-bold text-xl placeholder:text-gray-300 transition-colors"
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
+                        autoFocus
+                    />
+                </div>
+
+                <button 
+                    onClick={() => input.length > 2 && onNext(input)}
+                    disabled={input.length < 3}
+                    className="w-full bg-black text-white font-black text-xl py-5 rounded-2xl shadow-xl disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] transition-all active:scale-95"
+                >
+                    ANALYZE PROFILE
+                </button>
+                
+                <p className="text-center text-xs text-gray-400 uppercase tracking-widest font-bold">100% Private & Anonymous</p>
+            </div>
+        </div>
+    )
+}
+
+function AnalysisScreen({ handle, onComplete }: { handle: string, onComplete: () => void }) {
+  const [status, setStatus] = useState('Connecting to Instagram API...');
+  
+  useEffect(() => {
+    const steps = [
+        "Fetching public assets...",
+        `Analyzing @${handle} followers...`,
+        "Calculating engagement ratios...",
+        "Scanning for filters/edits...",
+        "Generating social score..."
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+        setStatus(steps[i]);
+        i++;
+        if (i >= steps.length) {
+            clearInterval(interval);
+            setTimeout(onComplete, 800);
+        }
+    }, 800);
+    return () => clearInterval(interval);
+  }, [onComplete, handle]);
+
+  return (
+    <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center p-8 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-50/50 to-white"></div>
+      
+      <div className="relative z-10 text-center space-y-12">
+        <div className="w-48 h-48 relative mx-auto">
+             <div className="absolute inset-0 border-4 border-pink-100 rounded-full"></div>
+             <div className="absolute inset-0 border-t-4 border-pink-500 rounded-full animate-spin duration-1000"></div>
+             <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                <div className="text-center">
+                    <p className="text-3xl font-black text-gray-200">AI</p>
+                </div>
+             </div>
+        </div>
+
+        <div className="space-y-2">
+            <h2 className="text-2xl font-black text-black tracking-tight uppercase">Analyzing</h2>
+            <p className="text-pink-600 font-mono text-sm font-bold animate-pulse">{status}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function RatingResultScreen({ onClaim }: { onClaim: () => void }) {
+    return (
+        <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-white p-8 font-sans relative overflow-hidden">
+            {/* Confetti/Glow */}
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-pink-100/50 via-white to-white pointer-events-none"></div>
+
+            <div className="relative z-10 w-full max-w-sm space-y-10 text-center animate-in fade-in zoom-in duration-500">
+                
+                <div className="space-y-2">
+                    <p className="text-gray-400 font-bold tracking-widest uppercase text-sm">PRELIMINARY SCORE</p>
+                    <h1 className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-pink-500 to-violet-600 tracking-tighter">
+                        7.8
+                    </h1>
+                    <div className="flex items-center justify-center gap-2">
+                        <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold border border-yellow-200">GOOD POTENTIAL</span>
+                    </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4 text-left shadow-lg">
+                    <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                        <span className="text-sm font-bold text-gray-500">Social Graph</span>
+                        <span className="text-green-500 font-bold">Top 15%</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-gray-200 pb-3">
+                        <span className="text-sm font-bold text-gray-500">Authenticity</span>
+                        <span className="text-yellow-500 font-bold">Unverified</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        <span className="text-sm font-bold text-gray-500">Est. Income</span>
+                        <span className="text-gray-300 font-bold">Hidden</span>
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    <p className="text-gray-600 font-medium text-sm">
+                        Your score is capped at 7.8 because your identity is unverified. Verified users average <span className="font-bold text-black">9.2</span>.
+                    </p>
+                    <button 
+                        onClick={onClaim}
+                        className="w-full bg-black text-white font-black text-xl py-5 rounded-2xl hover:scale-105 transition-transform active:scale-95 shadow-2xl shadow-pink-200/50"
+                    >
+                        CLAIM & BOOST SCORE
+                    </button>
+                    <button className="text-xs text-gray-400 font-bold hover:text-gray-600">
+                        No thanks, I'll stay a 7.8
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 function LandingScreen({ onEnter }: { onEnter: () => void }) {
   return (
@@ -220,49 +352,6 @@ function FloatingFilter({ text, color, rotate, x, y, delay = 0, index }: any) {
     )
 }
 
-function ScanningScreen({ onComplete }: { onComplete: () => void }) {
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 3500);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
-  return (
-    <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center p-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-50 to-white"></div>
-      
-      <div className="relative z-10 text-center space-y-10">
-        <div className="w-40 h-40 relative mx-auto">
-             <div className="absolute inset-0 border-4 border-pink-100 rounded-full"></div>
-             <div className="absolute inset-0 border-t-4 border-pink-500 rounded-full animate-spin"></div>
-             <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center shadow-sm">
-                <Shield className="text-pink-500 w-12 h-12" />
-             </div>
-        </div>
-
-        <div className="space-y-2">
-            <h2 className="text-2xl font-black text-black tracking-tight">VERIFYING...</h2>
-            <p className="text-gray-400 text-sm font-medium">Checking Face ID & Socials</p>
-        </div>
-
-        <div className="text-left text-xs font-bold text-gray-400 space-y-3 bg-white p-8 rounded-3xl border border-gray-100 w-72 mx-auto shadow-xl shadow-gray-100">
-            <p className="flex justify-between items-center">
-                <span>FACE SYMMETRY</span> 
-                <span className="text-pink-600 bg-pink-50 px-2 py-1 rounded-md">98% MATCH</span>
-            </p>
-            <p className="flex justify-between items-center">
-                <span>INSTAGRAM</span> 
-                <span className="text-pink-600 bg-pink-50 px-2 py-1 rounded-md">CONNECTED</span>
-            </p>
-            <p className="flex justify-between items-center">
-                <span>REALITY SCORE</span> 
-                <span className="text-gray-300 bg-gray-50 px-2 py-1 rounded-md animate-pulse">CALCULATING</span>
-            </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({ name: '', age: '', ig: '', photo: null });
@@ -284,7 +373,7 @@ function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
 
         {step === 0 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-10">
-                <h2 className="text-3xl font-black tracking-tight">First things first.</h2>
+                <h2 className="text-3xl font-black tracking-tight">Identity Check.</h2>
                 <div className="space-y-4">
                     <input 
                         type="text" 
@@ -374,12 +463,8 @@ function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
   )
 }
 
-// --- VIRAL SHARE SCREEN ---
-
 function ViralShareScreen({ onComplete }: { onComplete: () => void }) {
     const handleShare = async () => {
-        // In a real app, this would generate an image blob.
-        // For now, we simulate the "Share" intent.
         if (navigator.share) {
             try {
                 await navigator.share({
@@ -393,7 +478,6 @@ function ViralShareScreen({ onComplete }: { onComplete: () => void }) {
         } else {
             alert("Screenshot this card to share on Instagram!");
         }
-        // After sharing, let them in
         setTimeout(onComplete, 1000);
     };
 
