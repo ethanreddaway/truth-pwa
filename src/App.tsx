@@ -109,40 +109,40 @@ export default function App() {
 function LandingScreen({ onEnter }: { onEnter: () => void }) {
   return (
     <div className="min-h-[100dvh] flex flex-col items-center justify-between bg-black text-white p-8 font-sans">
-      <div className="flex-1 flex flex-col items-center justify-center space-y-8">
-        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+      <div className="flex-1 flex flex-col items-center justify-center space-y-12">
+        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_60px_rgba(255,255,255,0.3)]">
             <span className="font-black text-black text-5xl tracking-tighter">TR</span>
         </div>
         
-        <div className="text-center space-y-4">
-          <h1 className="text-6xl font-black tracking-tighter leading-none">
+        <div className="text-center space-y-6">
+          <h1 className="text-6xl font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
             TRUTH
           </h1>
-          <p className="text-gray-400 text-lg tracking-wide uppercase font-mono">
-            No Filters. No Lies. Just Data.
+          <p className="text-gray-400 text-lg tracking-widest uppercase font-medium">
+            Verified. Exclusive. Real.
           </p>
         </div>
 
         <div className="w-full max-w-xs space-y-4 pt-12">
-            <div className="flex items-center justify-between text-xs text-gray-500 font-mono border-b border-gray-800 pb-2">
-                <span>ACTIVE USERS</span>
-                <span className="text-green-500">14,203 ONLINE</span>
+            <div className="flex items-center justify-between text-xs text-gray-500 font-medium tracking-widest border-b border-white/10 pb-3">
+                <span>MEMBERS ONLINE</span>
+                <span className="text-white">14,203</span>
             </div>
-            <div className="flex items-center justify-between text-xs text-gray-500 font-mono border-b border-gray-800 pb-2">
-                <span>VERIFICATION QUEUE</span>
-                <span className="text-yellow-500">WAITLIST: 42m</span>
+            <div className="flex items-center justify-between text-xs text-gray-500 font-medium tracking-widest border-b border-white/10 pb-3">
+                <span>GUEST LIST</span>
+                <span className="text-yellow-500">42m WAIT</span>
             </div>
         </div>
       </div>
 
       <button 
         onClick={onEnter}
-        className="w-full max-w-sm bg-white text-black font-black text-lg py-5 rounded-full hover:scale-105 transition-transform active:scale-95 tracking-wide"
+        className="w-full max-w-sm bg-white text-black font-bold text-lg py-5 rounded-xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-xl shadow-white/10"
       >
-        ENTER THE PROTOCOL
+        REQUEST ACCESS
       </button>
       
-      <p className="mt-6 text-xs text-gray-600 font-mono">INVITE ONLY BETA v0.9</p>
+      <p className="mt-8 text-[10px] text-gray-600 tracking-widest uppercase">The Anti-Catfish Club • EST 2026</p>
     </div>
   )
 }
@@ -156,26 +156,34 @@ function ScanningScreen({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div className="min-h-[100dvh] bg-black flex flex-col items-center justify-center p-8 relative overflow-hidden">
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(20,20,20,1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,20,20,1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
+      {/* Soft Glow Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-transparent"></div>
       
-      <div className="relative z-10 text-center space-y-8">
+      <div className="relative z-10 text-center space-y-10">
         <div className="w-32 h-32 relative mx-auto">
-             <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
-             <div className="absolute inset-0 border-t-4 border-blue-500 rounded-full animate-spin"></div>
-             <ScanLine className="absolute inset-0 m-auto text-blue-500 w-12 h-12 animate-pulse" />
+             <div className="absolute inset-0 border border-white/10 rounded-full"></div>
+             <div className="absolute inset-0 border-t border-white rounded-full animate-spin"></div>
+             <Shield className="absolute inset-0 m-auto text-white w-10 h-10 animate-pulse" />
         </div>
 
-        <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-white tracking-tight animate-pulse">VERIFYING REALITY</h2>
-            <p className="text-blue-500 font-mono text-sm">ANALYZING BIOMETRICS...</p>
+        <div className="space-y-3">
+            <h2 className="text-xl font-medium text-white tracking-widest uppercase animate-pulse">Verifying Identity</h2>
+            <p className="text-gray-500 text-xs tracking-wider">PLEASE HOLD</p>
         </div>
 
-        <div className="text-left font-mono text-xs text-gray-500 space-y-2 bg-gray-900/50 p-6 rounded-lg border border-gray-800 w-64 mx-auto">
-            <p className="flex justify-between"><span>&gt; FACE MESH</span> <span className="text-green-500">OK</span></p>
-            <p className="flex justify-between"><span>&gt; EXIF DATA</span> <span className="text-green-500">OK</span></p>
-            <p className="flex justify-between"><span>&gt; INCOME API</span> <span className="text-gray-500">PENDING</span></p>
-            <p className="flex justify-between"><span>&gt; STATUS</span> <span className="text-white">UNRANKED</span></p>
+        <div className="text-left text-xs text-gray-400 space-y-3 bg-white/5 p-8 rounded-2xl border border-white/5 w-72 mx-auto backdrop-blur-md">
+            <p className="flex justify-between items-center">
+                <span className="tracking-widest">BIOMETRICS</span> 
+                <span className="text-white bg-white/20 px-2 py-0.5 rounded text-[10px]">VERIFIED</span>
+            </p>
+            <p className="flex justify-between items-center">
+                <span className="tracking-widest">SOCIAL GRAPH</span> 
+                <span className="text-white bg-white/20 px-2 py-0.5 rounded text-[10px]">VERIFIED</span>
+            </p>
+            <p className="flex justify-between items-center">
+                <span className="tracking-widest">FINANCIALS</span> 
+                <span className="text-gray-500 border border-white/10 px-2 py-0.5 rounded text-[10px]">PENDING</span>
+            </p>
         </div>
       </div>
     </div>
