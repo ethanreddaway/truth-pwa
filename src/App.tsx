@@ -30,7 +30,7 @@ const DEMO_PROFILE: Profile = {
 };
 
 export default function App() {
-  const [view, setView] = useState<'landing' | 'scanning' | 'app'>('landing');
+  const [view, setView] = useState<'landing' | 'scanning' | 'app' | 'onboarding'>('landing');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [lastSwipe, setLastSwipe] = useState<'left' | 'right' | null>(null);
 
@@ -46,6 +46,10 @@ export default function App() {
 
   if (view === 'scanning') {
     return <ScanningScreen onComplete={() => setView('app')} />;
+  }
+
+  if (view === 'onboarding') {
+    return <OnboardingFlow onComplete={() => setView('app')} />;
   }
 
   return (
@@ -98,7 +102,11 @@ export default function App() {
         </nav>
 
         {/* MODALS */}
-        <VerificationModal isOpen={showVerifyModal} onClose={() => setShowVerifyModal(false)} />
+        <VerificationModal 
+            isOpen={showVerifyModal} 
+            onClose={() => setShowVerifyModal(false)} 
+            onStart={() => setView('onboarding')}
+        />
         
       </div>
     </div>
@@ -235,6 +243,117 @@ function ScanningScreen({ onComplete }: { onComplete: () => void }) {
   )
 }
 
+function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({ name: '', age: '', ig: '', photo: null });
+
+  const handleNext = () => {
+    if (step < 3) setStep(step + 1);
+    else onComplete();
+  };
+
+  return (
+    <div className="min-h-[100dvh] flex items-center justify-center bg-white p-6 font-sans">
+      <div className="w-full max-w-sm space-y-8">
+        {/* Progress Bar */}
+        <div className="flex gap-2 mb-8">
+            {[0,1,2,3].map(i => (
+                <div key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= step ? 'bg-pink-500' : 'bg-gray-100'}`} />
+            ))}
+        </div>
+
+        {step === 0 && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-10">
+                <h2 className="text-3xl font-black tracking-tight">First things first.</h2>
+                <div className="space-y-4">
+                    <input 
+                        type="text" 
+                        placeholder="First Name" 
+                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                        value={formData.name}
+                        onChange={e => setFormData({...formData, name: e.target.value})}
+                    />
+                    <input 
+                        type="number" 
+                        placeholder="Age" 
+                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                        value={formData.age}
+                        onChange={e => setFormData({...formData, age: e.target.value})}
+                    />
+                </div>
+                <button onClick={handleNext} className="w-full bg-black text-white font-bold py-4 rounded-xl shadow-xl shadow-gray-200">
+                    CONTINUE
+                </button>
+            </div>
+        )}
+
+        {step === 1 && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-10">
+                <h2 className="text-3xl font-black tracking-tight">Connect Socials.</h2>
+                <p className="text-gray-500 text-sm">We use your Instagram to verify your photos against reality.</p>
+                <div className="space-y-4">
+                    <div className="relative">
+                        <span className="absolute left-4 top-4 text-gray-400 font-bold">@</span>
+                        <input 
+                            type="text" 
+                            placeholder="Instagram Handle" 
+                            className="w-full p-4 pl-10 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                            value={formData.ig}
+                            onChange={e => setFormData({...formData, ig: e.target.value})}
+                        />
+                    </div>
+                </div>
+                <button onClick={handleNext} className="w-full bg-black text-white font-bold py-4 rounded-xl shadow-xl shadow-gray-200">
+                    VERIFY HANDLE
+                </button>
+            </div>
+        )}
+
+        {step === 2 && (
+             <div className="space-y-6 animate-in fade-in slide-in-from-right-10">
+                <h2 className="text-3xl font-black tracking-tight">Proof of Life.</h2>
+                <p className="text-gray-500 text-sm">Upload a raw selfie. No filters. Our AI detects edits instantly.</p>
+                
+                <div className="w-full aspect-square bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-pink-300 transition-colors">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
+                        <ScanLine className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <span className="text-xs font-bold text-gray-400 tracking-widest uppercase">Tap to Upload</span>
+                </div>
+
+                <button onClick={handleNext} className="w-full bg-black text-white font-bold py-4 rounded-xl shadow-xl shadow-gray-200">
+                    ANALYZE PHOTO
+                </button>
+            </div>
+        )}
+
+        {step === 3 && (
+             <div className="text-center space-y-8 animate-in fade-in zoom-in duration-300">
+                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                    <BadgeCheck className="w-12 h-12 text-green-600" />
+                </div>
+                
+                <div className="space-y-2">
+                    <h2 className="text-3xl font-black tracking-tight">Application Received.</h2>
+                    <p className="text-gray-500 text-sm">You have been added to the Guest List.</p>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-2">
+                    <p className="text-xs text-gray-400 font-bold tracking-widest uppercase">YOUR POSITION</p>
+                    <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-violet-600">#42,901</p>
+                    <p className="text-xs text-gray-400">ETA: 4 WEEKS</p>
+                </div>
+
+                <button onClick={onComplete} className="w-full bg-white border-2 border-gray-100 text-black font-bold py-4 rounded-xl hover:bg-gray-50">
+                    RETURN TO BROWSER
+                </button>
+            </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // --- SUB COMPONENTS ---
 
 function NavIcon({ icon: Icon }: { icon: any }) {
@@ -329,7 +448,7 @@ function StatCard({ icon: Icon, label, value, color }: any) {
   );
 }
 
-function VerificationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+function VerificationModal({ isOpen, onClose, onStart }: { isOpen: boolean, onClose: () => void, onStart: () => void }) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-xl flex items-center justify-center p-6 animate-in fade-in duration-200">
@@ -367,7 +486,10 @@ function VerificationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () =
           </div>
         </div>
 
-        <button className="w-full bg-black text-white font-bold py-4 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-transform relative z-10 shadow-xl shadow-gray-200">
+        <button 
+            onClick={onStart}
+            className="w-full bg-black text-white font-bold py-4 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-transform relative z-10 shadow-xl shadow-gray-200"
+        >
             START VERIFICATION
         </button>
         <p className="mt-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest relative z-10">Takes 30 seconds</p>
