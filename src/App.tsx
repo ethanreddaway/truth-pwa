@@ -138,7 +138,7 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
         </div>
         
         {/* HEADLINE */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 relative z-20">
           <h1 className="text-6xl font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-black to-gray-600">
             TRUTH
           </h1>
@@ -147,11 +147,18 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
           </p>
         </div>
 
-        {/* FLOATING STANDARDS ANIMATION - Fanning out */}
-        <div className="w-full h-40 relative flex items-center justify-center">
-             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-6" x={-30} y={-10} delay={0} />
-             <FloatingFilter index={1} text="Height: 6'2+" color="bg-blue-50 text-blue-700 border-blue-200" rotate="rotate-6" x={30} y={40} delay={0.2} />
-             <FloatingFilter index={2} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="-rotate-2" x={0} y={-50} delay={0.4} />
+        {/* FLOATING STANDARDS ANIMATION - Fanning out cleanly */}
+        <div className="w-full h-56 relative flex items-center justify-center z-10">
+             {/* Top Row */}
+             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-3" x={-80} y={-50} delay={0} />
+             <FloatingFilter index={1} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="rotate-2" x={70} y={-60} delay={0.1} />
+             
+             {/* Middle/Bottom Row */}
+             <FloatingFilter index={2} text="Height: 6'2+" color="bg-blue-50 text-blue-700 border-blue-200" rotate="-rotate-1" x={0} y={0} delay={0.2} />
+             
+             {/* Outer Edges */}
+             <FloatingFilter index={3} text="Age: 23" color="bg-violet-50 text-violet-700 border-violet-200" rotate="rotate-6" x={90} y={40} delay={0.3} />
+             <FloatingFilter index={4} text="Role: Founder" color="bg-orange-50 text-orange-700 border-orange-200" rotate="-rotate-4" x={-85} y={50} delay={0.4} />
         </div>
 
         {/* STATS */}
