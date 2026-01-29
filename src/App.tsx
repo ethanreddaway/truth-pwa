@@ -49,7 +49,11 @@ export default function App() {
   }
 
   if (view === 'onboarding') {
-    return <OnboardingFlow onComplete={() => setView('app')} />;
+    return <OnboardingFlow onComplete={() => setView('viral')} />;
+  }
+
+  if (view === 'viral') {
+      return <ViralShareScreen onComplete={() => setView('app')} />;
   }
 
   return (
@@ -361,6 +365,90 @@ function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
       </div>
     </div>
   )
+}
+
+// --- VIRAL SHARE SCREEN ---
+
+function ViralShareScreen({ onComplete }: { onComplete: () => void }) {
+    const handleShare = async () => {
+        // In a real app, this would generate an image blob.
+        // For now, we simulate the "Share" intent.
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'My Truth Rank',
+                    text: 'I just joined TRUTH. My rank is #42,901. Get verified: https://truthdating.netlify.app',
+                    url: 'https://truthdating.netlify.app'
+                });
+            } catch (err) {
+                console.log('Share failed', err);
+            }
+        } else {
+            alert("Screenshot this card to share on Instagram!");
+        }
+        // After sharing, let them in
+        setTimeout(onComplete, 1000);
+    };
+
+    return (
+        <div className="min-h-[100dvh] flex flex-col items-center justify-between bg-white p-6 font-sans">
+            <div className="flex-1 w-full flex flex-col items-center justify-center space-y-8">
+                
+                <div className="text-center space-y-2">
+                    <h2 className="text-3xl font-black text-black tracking-tight">One last step.</h2>
+                    <p className="text-gray-500 font-medium">Skip the 4-week waitlist.</p>
+                </div>
+
+                {/* THE SOCIAL ASSET (Preview) */}
+                <div className="w-full max-w-xs aspect-[4/5] bg-black rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl shadow-gray-300">
+                    {/* Background Noise/Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black"></div>
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl"></div>
+                    
+                    <div className="relative z-10 flex justify-between items-start">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                            <span className="font-black text-black text-xl">TR</span>
+                        </div>
+                        <span className="text-white/50 font-mono text-xs tracking-widest border border-white/20 px-2 py-1 rounded">PENDING</span>
+                    </div>
+
+                    <div className="relative z-10 space-y-2">
+                        <p className="text-gray-400 text-xs font-bold tracking-widest uppercase">GLOBAL RANK</p>
+                        <p className="text-5xl font-black text-white tracking-tighter">#42,901</p>
+                    </div>
+
+                    <div className="relative z-10 pt-8 border-t border-white/10">
+                        <div className="flex justify-between items-end">
+                            <div className="space-y-1">
+                                <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase">MEMBER</p>
+                                <p className="text-white font-bold">@TOM.REDD</p>
+                            </div>
+                            <ScanLine className="w-8 h-8 text-pink-500" />
+                        </div>
+                    </div>
+                </div>
+
+                <p className="text-xs text-center text-gray-400 max-w-xs">
+                    Post this to your Story and tag <span className="text-black font-bold">@truth_app</span> to get instant Priority Verification.
+                </p>
+            </div>
+
+            <div className="w-full max-w-sm space-y-3">
+                <button 
+                    onClick={handleShare}
+                    className="w-full bg-gradient-to-r from-pink-600 to-violet-600 text-white font-black text-lg py-5 rounded-xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-xl shadow-pink-200"
+                >
+                    SHARE TO STORY
+                </button>
+                <button 
+                    onClick={onComplete}
+                    className="w-full text-gray-400 font-bold text-xs py-4 hover:text-gray-600"
+                >
+                    NO THANKS, I'LL WAIT
+                </button>
+            </div>
+        </div>
+    );
 }
 
 // --- SUB COMPONENTS ---
