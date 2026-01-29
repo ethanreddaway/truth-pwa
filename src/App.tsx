@@ -109,50 +109,87 @@ export default function App() {
 
 function LandingScreen({ onEnter }: { onEnter: () => void }) {
   return (
-    <div className="min-h-[100dvh] flex flex-col items-center justify-between bg-white text-black p-8 font-sans">
-      <div className="flex-1 flex flex-col items-center justify-center space-y-10">
-        <div className="w-28 h-28 bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 rounded-full flex items-center justify-center mb-6 shadow-[0_10px_40px_rgba(236,72,153,0.4)] animate-pulse">
-            <span className="font-black text-white text-6xl tracking-tighter">TR</span>
+    <div className="min-h-[100dvh] flex flex-col items-center justify-between bg-white text-black p-8 font-sans overflow-hidden relative">
+      
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+         <div className="absolute top-10 -right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+         <div className="absolute top-10 -left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+         <div className="absolute -bottom-32 left-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center space-y-10 z-10 w-full">
+        
+        {/* LOGO */}
+        <div className="w-24 h-24 bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 rounded-[2rem] flex items-center justify-center mb-2 shadow-[0_20px_50px_rgba(236,72,153,0.3)]">
+            <span className="font-black text-white text-5xl tracking-tighter">TR</span>
         </div>
         
+        {/* HEADLINE */}
         <div className="text-center space-y-4">
           <h1 className="text-7xl font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-black to-gray-600">
             TRUTH
           </h1>
-          <div className="space-y-1">
-              <p className="text-pink-600 text-lg font-bold uppercase tracking-widest">
-                Real People Only.
-              </p>
-              <p className="text-gray-400 text-sm font-medium">
-                No Filters. No Catfish.
-              </p>
-          </div>
+          <p className="text-gray-500 text-lg font-bold tracking-tight">
+            Date Higher Standards.
+          </p>
         </div>
 
-        <div className="w-full max-w-xs space-y-4 pt-8">
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 shadow-sm space-y-3">
+        {/* FLOATING STANDARDS ANIMATION */}
+        <div className="w-full max-w-xs h-32 relative flex items-center justify-center">
+             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-100 text-green-700 border-green-200" rotate="-rotate-3" />
+             <FloatingFilter index={1} text="Height: 6'2+" color="bg-blue-100 text-blue-700 border-blue-200" rotate="rotate-2" delay={1} />
+             <FloatingFilter index={2} text="Looks: Verified" color="bg-pink-100 text-pink-700 border-pink-200" rotate="-rotate-1" delay={2} />
+        </div>
+
+        {/* STATS */}
+        <div className="w-full max-w-xs pt-4">
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 shadow-sm space-y-3">
                 <div className="flex items-center justify-between text-xs font-bold tracking-wider">
-                    <span className="text-gray-400">ONLINE NOW</span>
-                    <span className="text-green-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 14,203</span>
+                    <span className="text-gray-400">MEMBERS ONLINE</span>
+                    <span className="text-black flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 14,203</span>
                 </div>
                 <div className="flex items-center justify-between text-xs font-bold tracking-wider">
-                    <span className="text-gray-400">WAITLIST</span>
-                    <span className="text-pink-500">42 MIN</span>
+                    <span className="text-gray-400">GUEST LIST</span>
+                    <span className="text-pink-500">42 MIN WAIT</span>
                 </div>
             </div>
         </div>
       </div>
 
-      <button 
-        onClick={onEnter}
-        className="w-full max-w-sm bg-gradient-to-r from-pink-600 to-violet-600 text-white font-black text-xl py-6 rounded-2xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-[0_10px_30px_rgba(236,72,153,0.4)]"
-      >
-        GET VERIFIED
-      </button>
-      
-      <p className="mt-8 text-[10px] text-gray-400 font-bold tracking-widest uppercase">Member of the Anti-Catfish Club</p>
+      {/* CTA */}
+      <div className="z-10 w-full flex flex-col items-center space-y-6">
+        <button 
+            onClick={onEnter}
+            className="w-full max-w-sm bg-black text-white font-black text-xl py-6 rounded-2xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-2xl shadow-gray-200 relative overflow-hidden group"
+        >
+            <span className="relative z-10">CHECK ELIGIBILITY</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </button>
+        
+        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">
+            Strictly Verified • Invite Only
+        </p>
+      </div>
     </div>
   )
+}
+
+function FloatingFilter({ text, color, rotate, delay = 0, index }: any) {
+    return (
+        <motion.div 
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: delay * 0.2, duration: 0.5, type: "spring" }}
+            className={`absolute ${color} border px-6 py-3 rounded-full font-bold shadow-lg shadow-gray-100/50 backdrop-blur-md ${rotate}`}
+            style={{ 
+                top: `${index * 35}px`, 
+                zIndex: 10 - index 
+            }}
+        >
+            {text}
+        </motion.div>
+    )
 }
 
 function ScanningScreen({ onComplete }: { onComplete: () => void }) {
