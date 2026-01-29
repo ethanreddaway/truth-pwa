@@ -144,10 +144,10 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
         </div>
 
         {/* FLOATING STANDARDS ANIMATION - Fanning out */}
-        <div className="w-full h-28 relative flex items-center justify-center">
-             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-6" x={-20} y={0} delay={0} />
-             <FloatingFilter index={1} text="Height: 6'2+" color="bg-blue-50 text-blue-700 border-blue-200" rotate="rotate-6" x={20} y={10} delay={0.2} />
-             <FloatingFilter index={2} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="-rotate-2" x={0} y={-20} delay={0.4} />
+        <div className="w-full h-40 relative flex items-center justify-center">
+             <FloatingFilter index={0} text="Income: $250k+" color="bg-green-50 text-green-700 border-green-200" rotate="-rotate-6" x={-30} y={-10} delay={0} />
+             <FloatingFilter index={1} text="Height: 6'2+" color="bg-blue-50 text-blue-700 border-blue-200" rotate="rotate-6" x={30} y={40} delay={0.2} />
+             <FloatingFilter index={2} text="Looks: Verified" color="bg-pink-50 text-pink-700 border-pink-200" rotate="-rotate-2" x={0} y={-50} delay={0.4} />
         </div>
 
         {/* STATS */}
@@ -158,8 +158,8 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
                     <span className="text-black flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> 14,203</span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-bold tracking-wider">
-                    <span className="text-gray-400">GUEST LIST</span>
-                    <span className="text-pink-500">42 MIN WAIT</span>
+                    <span className="text-gray-400">AVERAGE RATING</span>
+                    <span className="text-pink-500">8.9 / 10</span>
                 </div>
             </div>
         </div>
@@ -169,14 +169,14 @@ function LandingScreen({ onEnter }: { onEnter: () => void }) {
       <div className="z-10 w-full max-w-sm flex flex-col items-center space-y-4 pb-4">
         <button 
             onClick={onEnter}
-            className="w-full bg-black text-white font-black text-lg py-5 rounded-xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-2xl shadow-gray-300 relative overflow-hidden group"
+            className="w-full bg-black text-white font-black text-xl py-5 rounded-xl hover:scale-105 transition-transform active:scale-95 tracking-wide shadow-2xl shadow-gray-300 relative overflow-hidden group"
         >
-            <span className="relative z-10">CHECK ELIGIBILITY</span>
+            <span className="relative z-10">GET YOUR RATING</span>
             <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </button>
         
         <p className="text-[9px] text-gray-400 font-bold tracking-widest uppercase">
-            Strictly Verified • Invite Only
+            See where you rank globally
         </p>
       </div>
     </div>
