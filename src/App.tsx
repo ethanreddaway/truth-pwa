@@ -172,10 +172,10 @@ function ScanningScreen({ onComplete }: { onComplete: () => void }) {
         </div>
 
         <div className="text-left font-mono text-xs text-gray-500 space-y-2 bg-gray-900/50 p-6 rounded-lg border border-gray-800 w-64 mx-auto">
-            <p className="flex justify-between"><span>> FACE MESH</span> <span className="text-green-500">OK</span></p>
-            <p className="flex justify-between"><span>> EXIF DATA</span> <span className="text-green-500">OK</span></p>
-            <p className="flex justify-between"><span>> INCOME API</span> <span className="text-gray-500">PENDING</span></p>
-            <p className="flex justify-between"><span>> STATUS</span> <span className="text-white">UNRANKED</span></p>
+            <p className="flex justify-between"><span>&gt; FACE MESH</span> <span className="text-green-500">OK</span></p>
+            <p className="flex justify-between"><span>&gt; EXIF DATA</span> <span className="text-green-500">OK</span></p>
+            <p className="flex justify-between"><span>&gt; INCOME API</span> <span className="text-gray-500">PENDING</span></p>
+            <p className="flex justify-between"><span>&gt; STATUS</span> <span className="text-white">UNRANKED</span></p>
         </div>
       </div>
     </div>
