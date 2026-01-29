@@ -219,27 +219,6 @@ function ActionButton({ icon: Icon, color, bg, shadow, onClick }: any) {
     )
 }
 
-// --- SUB COMPONENTS ---
-
-function NavIcon({ icon: Icon }: { icon: any }) {
-    return (
-        <button className="p-3 text-gray-500 hover:text-white transition-colors">
-            <Icon className="w-6 h-6" />
-        </button>
-    )
-}
-
-function ActionButton({ icon: Icon, color, bg, onClick }: any) {
-    return (
-        <button 
-            onClick={onClick}
-            className={`w-14 h-14 rounded-full ${bg} border border-white/5 flex items-center justify-center transition-transform active:scale-95 shadow-lg shadow-black/50`}
-        >
-            <Icon className={`w-7 h-7 ${color}`} fill="currentColor" fillOpacity={0.2} />
-        </button>
-    )
-}
-
 function SwipeCard({ profile, onSwipe }: { profile: Profile, onSwipe: (d: 'left'|'right') => void }) {
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
