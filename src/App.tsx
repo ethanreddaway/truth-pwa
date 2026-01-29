@@ -18,7 +18,7 @@ interface Profile {
 }
 
 // --- MOCK DATA ---
-// v0.9.4 - Build Trigger
+// v0.9.6 - Force Rebuild
 const DEMO_PROFILE: Profile = {
   id: '1',
   name: 'Sarah',
