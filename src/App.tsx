@@ -131,7 +131,7 @@ function SocialInputScreen({ onNext }: { onNext: (handle: string) => void }) {
                     <input 
                         type="text" 
                         placeholder="instagram_handle" 
-                        className="w-full p-4 pl-10 bg-gray-50 rounded-2xl border-2 border-gray-100 focus:border-pink-500 outline-none font-bold text-xl placeholder:text-gray-300 transition-colors"
+                        className="w-full p-4 pl-10 bg-gray-50 rounded-2xl border-2 border-gray-100 focus:border-pink-500 outline-none font-bold text-xl placeholder:text-gray-300 text-black transition-colors"
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         autoFocus
@@ -378,14 +378,14 @@ function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
                     <input 
                         type="text" 
                         placeholder="First Name" 
-                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg text-black"
                         value={formData.name}
                         onChange={e => setFormData({...formData, name: e.target.value})}
                     />
                     <input 
                         type="number" 
                         placeholder="Age" 
-                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                        className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg text-black"
                         value={formData.age}
                         onChange={e => setFormData({...formData, age: e.target.value})}
                     />
@@ -406,7 +406,7 @@ function OnboardingFlow({ onComplete }: { onComplete: () => void }) {
                         <input 
                             type="text" 
                             placeholder="Instagram Handle" 
-                            className="w-full p-4 pl-10 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg"
+                            className="w-full p-4 pl-10 bg-gray-50 rounded-xl border border-gray-100 focus:border-pink-500 outline-none font-bold text-lg text-black"
                             value={formData.ig}
                             onChange={e => setFormData({...formData, ig: e.target.value})}
                         />
