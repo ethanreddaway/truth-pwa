@@ -35,6 +35,7 @@ export default function App() {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [lastSwipe, setLastSwipe] = useState<'left' | 'right' | null>(null);
   const [handle, setHandle] = useState('');
+  const [leadId, setLeadId] = useState<number | null>(null);
 
   const handleSwipe = (dir: 'left' | 'right') => {
     setLastSwipe(dir);
